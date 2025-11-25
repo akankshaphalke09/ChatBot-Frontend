@@ -26,12 +26,12 @@ export default function SidebarHeader({ open, setOpen }) {
       <button
         type="button"
         onClick={() => setOpen(!open)}
-        className="cursor-pointer -mt-4"
+        className="cursor-pointer px-3 py-3 -mx-2 -my-3 hover:bg-blue-800 rounded-md duration-300  flex gap-2 items-center relative group"
       >
         {open ? (
-          <IoClose size={30} className="duration-500" />
+          <IoClose size={20} className="duration-500" />
         ) : (
-          <BiSolidFoodMenu size={30} className="duration-500" />
+          <BiSolidFoodMenu size={20} className="duration-500  " />
         )}
       </button>
     </div>

@@ -22,13 +22,13 @@ export default function SidebarFooter({
       ></div>
 
       <div
-        className="flex items-center gap-2 px-2 py-2 cursor-pointer group"
+        className="flex items-center gap-2 px-2 py-2 cursor-pointer group  hover:bg-blue-800 rounded-md duration-300  flex gap-2"
         onClick={
           isLoggedIn ? () => setShowUserCard((prev) => !prev) : undefined
         }
       >
         <div>
-          <FaUserCircle size={30} />
+          <FaUserCircle size={24} />
         </div>
         <div
           className={`leading-5 ${

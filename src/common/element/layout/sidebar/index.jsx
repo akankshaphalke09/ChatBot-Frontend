@@ -1,8 +1,6 @@
 import React, { useState, useEffect } from "react";
 
-// icons (still needed here for menuItems)
-import { BsFillChatSquareTextFill } from "react-icons/bs";
-import { SiInformatica } from "react-icons/si";
+import { RiChatNewLine } from "react-icons/ri";
 import { useNavigate } from "react-router-dom";
 
 // new component imports
@@ -12,12 +10,8 @@ import SidebarFooter from "./footer";
 
 const menuItems = [
   {
-    icons: <BsFillChatSquareTextFill size={27} />,
-    label: "Chats",
-  },
-  {
-    icons: <SiInformatica size={27} />,
-    label: "Information",
+    icons: <RiChatNewLine size={20} />,
+    label: "New Chat",
   },
 ];
 
@@ -33,6 +27,9 @@ export default function Sidebar() {
     const name = localStorage.getItem("loggedInUser") || "";
     const email = localStorage.getItem("userEmail") || "";
 
+    if (!token) {
+      navigate("/");
+    }
     if (token) {
       setIsLoggedIn(true);
       setUser({ name, email });
@@ -51,12 +48,12 @@ export default function Sidebar() {
     setShowUserCard(false);
     setIsLoggedIn(false);
 
-    navigate("/login"); // or route.login.path
+    navigate("/"); // or route.login.path
   };
 
   return (
     <nav
-      className={`shadow-md h-screen p-2 flex flex-col duration-500 bg-blue-600 text-white ${
+      className={`shadow-md h-screen -my-2 p-2 flex flex-col duration-500 bg-blue-600 text-white ${
         open ? "w-60" : "w-16"
       }`}
     >
