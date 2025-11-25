@@ -12,7 +12,6 @@ export default function SidebarFooter({
 }) {
   return (
     <div className="relative">
-      {/* Hover tooltip (shows name + email when sidebar collapsed) */}
       <div
         className={`
             absolute bottom-14 left-14 bg-white text-black text-xs rounded-md 
