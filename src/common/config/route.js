@@ -8,4 +8,5 @@ export const route = {
   signup: {
     path: "/signup",
   },
+  chat: { path: "/chat" },
 };
