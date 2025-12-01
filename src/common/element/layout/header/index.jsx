@@ -1,41 +1,58 @@
 // src/common/element/header/index.jsx (example)
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { route } from "../../../config/route";
 
 export default function Header() {
   const navigate = useNavigate();
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
 
-  // 👇 Check token every render
-  const token = localStorage.getItem("token");
-  const isLoggedIn = !!token;
+  // Function to check auth status
+  const checkAuthStatus = () => {
+    const token = localStorage.getItem("token");
+    setIsLoggedIn(!!token);
+  };
+
+  useEffect(() => {
+    // Initial check
+    checkAuthStatus();
+
+    // Listen for auth changes
+    const handleAuthChange = () => {
+      checkAuthStatus();
+    };
+
+    window.addEventListener("authChange", handleAuthChange);
+
+    return () => {
+      window.removeEventListener("authChange", handleAuthChange);
+    };
+  }, []);
 
   const handleLoginClick = () => navigate(route.login.path);
   const handleSignupClick = () => navigate(route.signup.path);
   const handleChatClick = () => navigate(route.chat.path || "/chat");
 
   return (
-    <header className="w-full flex items-center justify-between px-4 py-2 shadow-md bg-white">
+    <header className="w-full flex items-center justify-between px-0 py-2.5 bg-gray-900">
       {/* Left: logo or title */}
-      <div className="flex items-center gap-2">
-        <img src="/logo.jpg" alt="Logo" className="w-8 h-8 rounded-md" />
-        <span className="font-semibold">Hello App</span>
+      <div className="flex items-center pl-2">
+        <span className="text-base text-white font-medium">ChatBot</span>
       </div>
 
       {/* Right: buttons */}
-      {/* Right: buttons */}
-      <div className="flex items-center gap-3">
+      <div className="flex items-center gap-2.5 pr-5">
         {!isLoggedIn && (
           <>
             <button
               onClick={handleLoginClick}
-              className="px-3 py-1 text-sm rounded-md border border-blue-600 text-blue-600 hover:bg-blue-50"
+              className="px-3.5 py-1.5 text-sm rounded-lg border-2 border-gray-600 text-gray-200 hover:border-gray-400 hover:text-white hover:shadow-lg hover:shadow-gray-700/50 transition-all duration-300 font-medium backdrop-blur-sm"
             >
               Login
             </button>
             <button
               onClick={handleSignupClick}
-              className="px-3 py-1 text-sm rounded-md bg-blue-600 text-white hover:bg-blue-700"
+              className="px-3.5 py-1.5 text-sm rounded-lg border-2 border-gray-500 text-gray-200 hover:border-gray-300 hover:text-white hover:shadow-lg hover:shadow-gray-700/50 transition-all duration-300 font-medium backdrop-blur-sm"
             >
               Signup
             </button>

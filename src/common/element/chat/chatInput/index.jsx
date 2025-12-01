@@ -30,9 +30,9 @@ function ChatInput({ onSend, disabled = false }) {
   return (
     <form
       onSubmit={handleSubmit}
-      className="w-full border-t border-border bg-background/80 backdrop-blur px-3 py-2"
+      className="w-full bg-gray-900 px-4 py-4"
     >
-      <div className="mx-auto flex max-w-3xl items-end gap-2 rounded-2xl border bg-muted/40 px-3 py-2">
+      <div className="mx-auto flex max-w-4xl items-end gap-3 rounded-2xl border border-gray-700 bg-gray-800/50 px-4 py-3 shadow-xl">
         {/* TEXT AREA */}
         <div className="flex-1">
           <textarea
@@ -43,7 +43,7 @@ function ChatInput({ onSend, disabled = false }) {
             onChange={(e) => setValue(e.target.value)}
             onKeyDown={handleKeyDown}
             placeholder="How can I help you today?"
-            className="w-full resize-none bg-transparent text-sm outline-none placeholder:text-muted-foreground max-h-40 overflow-y-auto py-1"
+            className="w-full resize-none bg-transparent text-sm text-white outline-none placeholder:text-gray-400 max-h-40 overflow-y-auto py-1"
           />
         </div>
 
@@ -51,11 +51,10 @@ function ChatInput({ onSend, disabled = false }) {
         <button
           type="submit"
           disabled={disabled || !value.trim()}
-          className="flex h-8 w-8 items-center justify-center rounded-full bg-primary text-primary-foreground disabled:opacity-50 disabled:cursor-not-allowed hover:opacity-90 transition"
+          className="flex h-10 w-10 items-center justify-center rounded-full bg-gradient-to-r from-gray-600 to-gray-700 text-white disabled:opacity-30 disabled:cursor-not-allowed hover:from-gray-500 hover:to-gray-600 transition-all duration-300 shadow-lg border border-gray-500"
         >
-          {/* simple text icon; change to anything you like */}
           <span className="text-xs font-semibold">
-            <IoIosSend size={20} color="white" />
+            <IoIosSend size={22} color="white" />
           </span>
         </button>
       </div>

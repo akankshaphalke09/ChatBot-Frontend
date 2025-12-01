@@ -8,12 +8,35 @@ import SidebarHeader from "./header";
 import SidebarMenu from "./Menu";
 import SidebarFooter from "./footer";
 
-const menuItems = [
-  {
-    icons: <RiChatNewLine size={20} />,
-    label: "New Chat",
-  },
-];
+const handleNewChat = async () => {
+    const token = localStorage.getItem("token");
+    
+    try {
+      // Call backend to clear conversation history
+      if (token) {
+        await fetch("http://localhost:8080/api/chat/clear", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        });
+      }
+      
+      // Dispatch event to clear chat messages in frontend
+      window.dispatchEvent(new Event("clearChat"));
+    } catch (err) {
+      console.error("Error clearing chat:", err);
+    }
+  };
+
+  const menuItems = [
+    {
+      icons: <RiChatNewLine size={20} />,
+      label: "New Chat",
+      onClick: handleNewChat,
+    },
+  ];
 
 export default function Sidebar() {
   const navigate = useNavigate();
@@ -22,14 +45,12 @@ export default function Sidebar() {
   const [user, setUser] = useState({ name: "", email: "" });
   const [isLoggedIn, setIsLoggedIn] = useState(false);
 
-  useEffect(() => {
+  // Function to update user state from localStorage
+  const updateUserFromStorage = () => {
     const token = localStorage.getItem("token");
     const name = localStorage.getItem("loggedInUser") || "";
     const email = localStorage.getItem("userEmail") || "";
 
-    if (!token) {
-      navigate("/");
-    }
     if (token) {
       setIsLoggedIn(true);
       setUser({ name, email });
@@ -37,6 +58,23 @@ export default function Sidebar() {
       setIsLoggedIn(false);
       setUser({ name: "Guest", email: "" });
     }
+  };
+
+  useEffect(() => {
+    // Initial check
+    updateUserFromStorage();
+
+    // Listen for custom auth events (for same-window updates)
+    const handleAuthChange = () => {
+      updateUserFromStorage();
+    };
+
+    window.addEventListener("authChange", handleAuthChange);
+
+    // Cleanup
+    return () => {
+      window.removeEventListener("authChange", handleAuthChange);
+    };
   }, []);
 
   const handleLogout = () => {
@@ -44,17 +82,20 @@ export default function Sidebar() {
     localStorage.removeItem("loggedInUser");
     localStorage.removeItem("userEmail");
 
-    setUser({ name: "", email: "" });
+    setUser({ name: "Guest", email: "" });
     setShowUserCard(false);
     setIsLoggedIn(false);
 
-    navigate("/"); // or route.login.path
+    // Dispatch custom event to notify other components
+    window.dispatchEvent(new Event("authChange"));
+
+    navigate("/");
   };
 
   return (
     <nav
-      className={`shadow-md h-screen -my-2 p-2 flex flex-col duration-500 bg-blue-600 text-white ${
-        open ? "w-60" : "w-16"
+      className={`shadow-xl h-screen p-3 flex flex-col duration-500 bg-gradient-to-b from-gray-900 via-gray-800 to-black text-white border-r border-gray-700 ${
+        open ? "w-64" : "w-14"
       }`}
     >
       {/* Header */}
