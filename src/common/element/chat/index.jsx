@@ -4,6 +4,11 @@ import ChatInput from "./chatInput";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { Navigate } from "react-router-dom";
+
+// src/common/element/chat/index.jsx
+const API_BASE_URL =
+  process.env.REACT_APP_BACKEND_URL || "http://localhost:8080";
+
 function Chat() {
   const [messages, setMessages] = useState([]); // [{role: "user"|"assistant", content: string}]
   const [loading, setLoading] = useState(false);
@@ -21,7 +26,7 @@ function Chat() {
       window.removeEventListener("clearChat", handleClearChat);
     };
   }, []);
-  
+
   const handleSend = async ({ message }) => {
     // Check token before sending
     if (!token) {
@@ -39,7 +44,7 @@ function Chat() {
 
     try {
       // 2. call your backend, which calls OpenRouter
-      const res = await fetch("http://localhost:8080/api/chat", {
+      const res = await fetch(`${API_BASE_URL}/api/chat`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -75,8 +80,12 @@ function Chat() {
         {messages.length === 0 && (
           <div className="flex items-center justify-center h-full">
             <div className="text-center">
-              <h2 className="text-3xl font-bold text-gray-400 mb-2">How can I help you today?</h2>
-              <p className="text-gray-500 text-sm">Start a conversation by typing a message below</p>
+              <h2 className="text-3xl font-bold text-gray-400 mb-2">
+                How can I help you today?
+              </h2>
+              <p className="text-gray-500 text-sm">
+                Start a conversation by typing a message below
+              </p>
             </div>
           </div>
         )}
@@ -102,8 +111,14 @@ function Chat() {
         {loading && (
           <div className="flex items-center gap-2 text-sm text-gray-400 mt-2">
             <div className="w-2 h-2 bg-gray-400 rounded-full animate-bounce"></div>
-            <div className="w-2 h-2 bg-gray-400 rounded-full animate-bounce" style={{ animationDelay: '0.2s' }}></div>
-            <div className="w-2 h-2 bg-gray-400 rounded-full animate-bounce" style={{ animationDelay: '0.4s' }}></div>
+            <div
+              className="w-2 h-2 bg-gray-400 rounded-full animate-bounce"
+              style={{ animationDelay: "0.2s" }}
+            ></div>
+            <div
+              className="w-2 h-2 bg-gray-400 rounded-full animate-bounce"
+              style={{ animationDelay: "0.4s" }}
+            ></div>
             <span>Thinking...</span>
           </div>
         )}
