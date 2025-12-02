@@ -7,8 +7,7 @@ import { Navigate } from "react-router-dom";
 
 // src/common/element/chat/index.jsx
 const API_BASE_URL =
-  process.env.REACT_APP_BACKEND_URL ||
-  "https://chatbot-frontend-cda5.onrender.com";
+  process.env.REACT_APP_BACKEND_URL || "http://localhost:8080";
 
 function Chat() {
   const [messages, setMessages] = useState([]); // [{role: "user"|"assistant", content: string}]
